@@ -1,4 +1,4 @@
-package com.javacourse.ecommerce.controller;
+package com.javacourse.ecommerce.controllers;
 
 import com.javacourse.ecommerce.entities.User;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     @GetMapping
     public ResponseEntity<User> findAll() {
-        User user = new User(1L, "Riquelme", "riquelmemaia2@gmail.com", "123");
+        User user = new User(1L, "Riquelme", "51980432298", "rique@dev.com", "123");
         return ResponseEntity.ok().body(user);
     }
 }
