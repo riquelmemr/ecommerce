@@ -1,14 +1,8 @@
 package com.javacourse.ecommerce.config;
 
-import com.javacourse.ecommerce.entities.Category;
-import com.javacourse.ecommerce.entities.Order;
-import com.javacourse.ecommerce.entities.Product;
-import com.javacourse.ecommerce.entities.User;
+import com.javacourse.ecommerce.entities.*;
 import com.javacourse.ecommerce.enums.OrderStatus;
-import com.javacourse.ecommerce.repositories.CategoryRepository;
-import com.javacourse.ecommerce.repositories.OrderRepository;
-import com.javacourse.ecommerce.repositories.ProductRepository;
-import com.javacourse.ecommerce.repositories.UserRepository;
+import com.javacourse.ecommerce.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +25,9 @@ public class ConfigTest implements CommandLineRunner {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private OrderEntryRepository orderEntryRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -65,5 +62,12 @@ public class ConfigTest implements CommandLineRunner {
 
         userRepository.saveAll(Arrays.asList(u1, u2));
         orderRepository.saveAll(Arrays.asList(o1, o2, o3));
+
+        OrderEntry oe1 = new OrderEntry(o1, p1, 2, p1.getPrice());
+        OrderEntry oe2 = new OrderEntry(o1, p3, 1, p3.getPrice());
+        OrderEntry oe3 = new OrderEntry(o2, p3, 2, p3.getPrice());
+        OrderEntry oe4 = new OrderEntry(o3, p5, 2, p5.getPrice());
+
+        orderEntryRepository.saveAll(Arrays.asList(oe1, oe2, oe3, oe4));
     }
 }
