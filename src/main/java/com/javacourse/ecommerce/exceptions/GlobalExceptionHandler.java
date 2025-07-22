@@ -20,4 +20,14 @@ public class GlobalExceptionHandler {
                 request.getRequestURI());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(standardError);
     }
+
+    @ExceptionHandler(DatabaseException.class)
+    public ResponseEntity<StandardError> database(DatabaseException e, HttpServletRequest request) {
+        StandardError standardError = new StandardError(
+                Instant.now(), HttpStatus.BAD_REQUEST.value(),
+                "Database error",
+                e.getMessage(),
+                request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(standardError);
+    }
 }

@@ -1,12 +1,13 @@
 package com.javacourse.ecommerce.services.user.impl;
 
 import com.javacourse.ecommerce.entities.User;
+import com.javacourse.ecommerce.exceptions.DatabaseException;
 import com.javacourse.ecommerce.exceptions.ModelNotFoundException;
 import com.javacourse.ecommerce.repositories.UserRepository;
 import com.javacourse.ecommerce.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +35,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Long id) {
-        userRepository.deleteById(id);
+        try {
+            userRepository.findById(id).ifPresentOrElse(user -> {
+                userRepository.delete(user);
+            }, () -> {
+                throw new ModelNotFoundException(id);
+            });
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Integrity violation: " + e.getMessage());
+        }
     }
 
     @Override
