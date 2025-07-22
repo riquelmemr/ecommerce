@@ -69,5 +69,10 @@ public class ConfigTest implements CommandLineRunner {
         OrderEntry oe4 = new OrderEntry(o3, p5, 2, p5.getPrice());
 
         orderEntryRepository.saveAll(Arrays.asList(oe1, oe2, oe3, oe4));
+
+        Payment pay1 = new Payment(null, Instant.parse("2019-06-20T21:53:07Z"), o1);
+        o1.setPayment(pay1);
+
+        orderRepository.save(o1);
     }
 }
