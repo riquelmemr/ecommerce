@@ -5,6 +5,7 @@ import com.javacourse.ecommerce.exceptions.DatabaseException;
 import com.javacourse.ecommerce.exceptions.ModelNotFoundException;
 import com.javacourse.ecommerce.repositories.UserRepository;
 import com.javacourse.ecommerce.services.user.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -48,9 +49,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User update(Long id, User user) {
-        User entity = userRepository.getReferenceById(id);
-        updateUserData(entity, user);
-        return userRepository.save(entity);
+        try {
+            User entity = userRepository.getReferenceById(id);
+            updateUserData(entity, user);
+            return userRepository.save(entity);
+        } catch (EntityNotFoundException e) {
+            throw new ModelNotFoundException(id);
+        }
     }
 
     private void updateUserData(User reference, User user) {
